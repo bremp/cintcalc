@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
+import { CurrencyPipe } from '@angular/common';
 
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
@@ -23,10 +25,11 @@ const homeRoute: Routes = [
   imports: [
     BrowserModule,
     RouterModule.forRoot(homeRoute),
+    ReactiveFormsModule,
     MDBBootstrapModule.forRoot()
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
-  providers: [],
+  providers: [CurrencyPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
