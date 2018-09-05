@@ -19,8 +19,8 @@ export class HomeComponent implements OnInit {
     const defaultMonthlyBalance = 96597.87;
     const defaultApr = 2.75;
     const calendarDays = 365;
-    const numberPattern = '^[0-9]*$';
-    const currencyPattern = '^[+-]?[0-9]{1,3}(?:,?[0-9]{3})*(?:\.[0-9]{2})?$';
+    const numberPattern = '^\\d*\.?\\d+$';
+    const currencyPattern = '^[0-9]{1,3}(?:,?[0-9]{3})*(?:\.[0-9]{2})?$';
 
     this.form = this.fb.group({
       limit: [defaultLimit,

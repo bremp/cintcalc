@@ -67,9 +67,11 @@
                 <label for="daysInMonth">Days in Month</label>
               </div>
             </mdb-card-text>
+
             <div class="flex-row">
-              <button mdbBtn color="primary" class="waves-light" mdbWavesEffect (click)="calculate()">Calculate</button>
+              <button mdbBtn [disabled]="form.invalid" color="primary" class="waves-light" mdbWavesEffect (click)="calculate()">Calculate</button>
             </div>
+
             <div class="md-form input-group">
               <div class="input-group-prepend">
                 <span class="input-group-text">$</span>
