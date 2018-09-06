@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { CurrencyPipe } from '@angular/common';
 
@@ -29,7 +30,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private unsubscribe = new Subject<void>();  // variable to unsubscribe from valueChanges observables.
 
-  constructor(private fb: FormBuilder, private currencyPipe: CurrencyPipe) { }
+  constructor(private router: Router, private fb: FormBuilder, private currencyPipe: CurrencyPipe) { }
 
   ngOnInit() {
     const defaultLimit = 100000;
@@ -88,6 +89,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     const principalPayment = this.minPaymentControl.value - interestCharge;
     this.monthlyPrincipalPaymentControl.setValue(this.currencyPipe.transform(principalPayment, 'USD', '', '1.2-2'));
+  }
+
+  reset() {
+    // TODO: Fix reset!
+    this.router.navigate(['/']);
   }
 
   private onChanges() {
