@@ -53,6 +53,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     const defaultApr = 2.75;
     const numberPattern = '^\\d*\.?\\d+$';
     const currencyPattern = '^[0-9]{1,3}(?:,?[0-9]{3})*(?:\.[0-9]{2})?$';
+    const daysInMonthPattern = '(28|29|30|31)';
 
     this.form = this.fb.group({
       limit: [defaultLimit,
@@ -70,7 +71,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         [Validators.required, Validators.pattern(currencyPattern)]
       ],
       daysInMonth: [30,
-        [Validators.required, Validators.pattern(numberPattern)]
+        [Validators.required, Validators.pattern(daysInMonthPattern)]
       ],
       monthlyInterestCharge: { value: '?', disabled: true },
       monthlyPrincipalPayment: { value: '?', disabled: true }
