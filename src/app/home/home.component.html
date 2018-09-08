@@ -87,8 +87,8 @@
             </mdb-card-text>
 
             <div class="flex-row">
-              <button mdbBtn [disabled]="form.invalid" color="primary" class="waves-light" mdbWavesEffect (click)="calculate()">Calculate</button>
-              <button mdbBtn color="primary" class="waves-light" mdbWavesEffect (click)="reset()">Reset</button>
+              <button mdbBtn id="calculate" [disabled]="form.invalid" color="primary" class="waves-light" mdbWavesEffect (click)="calculate()">Calculate</button>
+              <button mdbBtn id="reset" color="primary" class="waves-light" mdbWavesEffect (click)="reset()">Reset</button>
             </div>
 
             <div class="row">

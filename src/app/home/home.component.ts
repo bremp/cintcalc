@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { CurrencyPipe } from '@angular/common';
 
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -29,8 +29,22 @@ export class HomeComponent implements OnInit, OnDestroy {
   monthlyPrincipalPaymentControl: AbstractControl;
 
   private unsubscribe = new Subject<void>();  // variable to unsubscribe from valueChanges observables.
+  private resetSubcription: Subscription;
 
-  constructor(private router: Router, private fb: FormBuilder, private currencyPipe: CurrencyPipe) { }
+  constructor(private router: Router, private fb: FormBuilder, private currencyPipe: CurrencyPipe) {
+    // Hack to refreshing the component when clicking reset.
+    // Override the route reuse strategy.
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false;
+    }
+
+    this.resetSubcription = this.router.events.subscribe((evt) => {
+      if (evt instanceof NavigationEnd) {
+        // trick the Router into believing it's last link wasn't previously loaded
+        this.router.navigated = false;
+      }
+    });
+  }
 
   ngOnInit() {
     const defaultLimit = 100000;
@@ -81,6 +95,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
+    if (this.resetSubcription) {
+      this.resetSubcription.unsubscribe();
+    }
   }
 
   calculate() {
@@ -92,8 +109,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   reset() {
-    // TODO: Fix reset!
-    this.router.navigate(['/']);
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+      this.router.navigate(['/home']));
   }
 
   private onChanges() {
@@ -125,16 +142,16 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     let dailyInterest = 0;
     this.aprControl.valueChanges
-    .pipe(
-      debounceTime(this.calcDelay),
-      takeUntil(this.unsubscribe)
-    )
-    .subscribe(val => {
-      if (this.aprControl.valid) {
-        dailyInterest = val / this.percent / this.calendarDays;
-      }
-      this.dailyInterestRateControl.setValue(dailyInterest);
-    });
+      .pipe(
+        debounceTime(this.calcDelay),
+        takeUntil(this.unsubscribe)
+      )
+      .subscribe(val => {
+        if (this.aprControl.valid) {
+          dailyInterest = val / this.percent / this.calendarDays;
+        }
+        this.dailyInterestRateControl.setValue(dailyInterest);
+      });
   }
 
 }

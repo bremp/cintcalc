@@ -12,7 +12,8 @@ import { HeaderComponent } from './shared/header/header.component';
 import { HomeComponent } from './home/home.component';
 
 const homeRoute: Routes = [
-  { path: '', component: HomeComponent }
+  { path: '', pathMatch: 'full', redirectTo: 'home' },
+  { path: 'home', component: HomeComponent }
 ];
 
 @NgModule({
