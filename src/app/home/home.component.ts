@@ -6,6 +6,7 @@ import { CurrencyPipe } from '@angular/common';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
+// https://www.gobankingrates.com/loans/home-equity/how-interest-calculated-heloc/
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -51,8 +52,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     const defaultMinPaymentRate = 0.659;
     const defaultMonthlyBalance = 96597.87;
     const defaultApr = 2.75;
-    const numberPattern = '^\\d*\.?\\d+$';
-    const currencyPattern = '^[0-9]{1,3}(?:,?[0-9]{3})*(?:\.[0-9]{2})?$';
+    const numberPattern = '^(0|[1-9]\\d*|\\.\\d+|0\\.\\d*|[1-9]\\d*\\.\\d*)$';
+    const currencyPattern = '^[0-9]{1,3}(?:,?[0-9]{3})*(?:\\.[0-9]{2})?$';
     const daysInMonthPattern = '(28|29|30|31)';
 
     this.form = this.fb.group({
